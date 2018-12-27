@@ -1,5 +1,6 @@
 import praw
 import matplotlib.pyplot as plt
+from collections import Counter
 
 #top secret data 
 reddit = praw.Reddit(client_id='id', \
@@ -27,7 +28,8 @@ commonWords = {'that','this','and','of','the','for','I','it','has','in',
 'all','when','had','see','his','him','who','by','her','she','our','thing','-',
 'now','what','going','been','we',"I'm",'than','any','because','We','even',
 'said','only','want','other','into','He','what','i','That','thought',
-'think',"that's",'Is','much'}
+'think',"that's",'Is','much','too','still','got','its','theres','Cant','Lmao',
+'My','these','those','[deleted]','if','It',"It's","I've"}
 
 for submission in subreddit.top(limit=500):
     submission.comments.replace_more(limit=0)
@@ -35,45 +37,21 @@ for submission in subreddit.top(limit=500):
         count += 1
         if(count == max):
             break
-        word = ""
-        for letter in top_level_comment.body:
-            if(letter == ' '):
-                if(word and not word[-1].isalnum()):
-                    word = word[:-1]
-                if not word in commonWords:
-                    words.append(word)
-                word = ""
-            else:
-                word += letter
+        tempWords = top_level_comment.body.split(' ')
+        filter(str.isalpha, words)
+        words += [word for word in tempWords if word not in commonWords]
     if(count == max):
             break
 
-for word in words:
-    if word in wordCount:
-        wordCount[word] += 1
-    else:
-        wordCount[word] = 1
+word_count = Counter(words)
 
-sortedList = sorted(wordCount, key = wordCount.get, reverse = True)
+top_words = word_count.most_common(10)
 
-keyWords = []
-keyCount = []
-amount = 0
-
-for entry in sortedList:
-    keyWords.append(entry)
-    keyCount.append(wordCount[entry])
-    amount += 1
-    if (amount == 10):
-        break
-
-labels = keyWords
-sizes = keyCount
-# explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+topWords = [word[0] for word in top_words]
+topWordsCount = [value[1] for value in top_words]
 
 plt.title('Top comments for: r/' + subredditname)
-plt.pie(sizes, labels=labels, autopct='%1.1f%%',
+plt.pie(topWordsCount, labels=topWords,autopct='%1.1f%%',
         shadow=True, startangle=90)
 plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
 plt.show()
