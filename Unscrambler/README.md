@@ -23,7 +23,7 @@ Counter({'w': 1, 'o': 1, 'r': 1, 'd': 1})
 ```
 
 ## Usage
-SInce this repo already has the dictionary.json, you only need to clone this repo and run `python3 wordunscrambler.py` on your terminal. The following is a sample execution.
+Since this repo already has the dictionary.json, you only need to clone this repo and run `python3 wordunscrambler.py` on your terminal. The following is a sample execution.
 ```bash
 $ python3 wordunscrambler.py 
 Enter a word: ilstne
@@ -32,4 +32,6 @@ listen
 silent 
 tinsel 
 ```
+You can also create/update/modify the dictionary by replacing the words.txt with your choice and executing the [wordDictionary.py file](wordDictionary.py).
 
+The original words.txt file was taken from [this](https://svnweb.freebsd.org/csrg/share/dict/) section of the freebsd website.
